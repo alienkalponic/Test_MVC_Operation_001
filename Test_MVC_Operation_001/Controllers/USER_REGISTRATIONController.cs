@@ -87,5 +87,43 @@ namespace Test_MVC_Operation_001.Controllers
                 return hrm;
             }
         }
+        [HttpGet]
+        [Route("api/Test_MVC_Operation_001/Mail_Search")]
+        public HttpResponseMessage Mail_Search(List<Information_Model> RequestData)
+        {
+            HttpResponseMessage hrm = new HttpResponseMessage();
+            ResponseObj ro = new ResponseObj();
+            DataTable DT = new DataTable();
+            try
+            {
+                if (RequestData.Count == 0)
+                {
+                    ro.Status = 0;
+                    ro.Message = "PASS PROPER DATA!!";
+                }
+                else
+                {
+                    SqlParameter[] prm = new SqlParameter[]
+                        {
+                            new SqlParameter("@TYPE","SEARCH_MAIL"),
+                            new SqlParameter("@EMAIL_ID",RequestData[0].EMAIL_ID)
+                        };
+                    DT = new SQLHelper().ExecuteDataTable("SP_INFORMATION", prm, CommandType.StoredProcedure);
+                    if (DT.Rows.Count > 0)
+                    {
+                        ro.Status = 1;
+                        ro.Message = "SECCESS";
+                        ro.dataTable = DT;
+                    }
+                }
+                hrm = new GenLib().RecvAPIData(ro);
+                return hrm;
+            }
+            catch (Exception ex)
+            {
+                hrm = new GenLib().WriteErrorLog(ex);
+                return hrm;
+            }
+        }
     }
 }
