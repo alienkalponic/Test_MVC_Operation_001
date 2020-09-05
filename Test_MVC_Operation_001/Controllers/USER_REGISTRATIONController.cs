@@ -59,5 +59,33 @@ namespace Test_MVC_Operation_001.Controllers
                 return hrm;
             }
         }
+
+        [HttpGet]
+        [Route("api/Test_MVC_Operation_001/AllSearch")]
+        public HttpResponseMessage AllSearch()
+        {
+            HttpResponseMessage hrm = new HttpResponseMessage();
+            ResponseObj ro = new ResponseObj();
+            try
+            {
+                SqlParameter[] prm = new SqlParameter[]
+                    {
+                        new SqlParameter("@TYPE","ALL_SEARCH")
+                    };
+                DataTable DT = new SQLHelper().ExecuteDataTable("SP_INFORMATION", prm, CommandType.StoredProcedure);
+                if (DT.Rows.Count > 0)
+                {
+                    ro.Status = 1;
+                    ro.Message = "SUCCESS";
+                    ro.dataTable = DT;
+                }
+                hrm = new GenLib().RecvAPIData(ro);
+                return hrm;
+            }
+            catch (Exception ex) {
+                hrm = new GenLib().WriteErrorLog(ex);
+                return hrm;
+            }
+        }
     }
 }
