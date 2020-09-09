@@ -87,7 +87,7 @@ namespace Test_MVC_Operation_001.Controllers
                 return hrm;
             }
         }
-        [HttpGet]
+        [HttpPost]
         [Route("api/Test_MVC_Operation_001/Mail_Search")]
         public HttpResponseMessage Mail_Search(List<Information_Model> RequestData)
         {
