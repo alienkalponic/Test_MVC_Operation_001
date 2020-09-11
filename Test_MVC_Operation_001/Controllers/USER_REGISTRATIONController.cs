@@ -125,5 +125,71 @@ namespace Test_MVC_Operation_001.Controllers
                 return hrm;
             }
         }
+        [HttpGet]
+        [Route("api/Test_MVC_Operation_001/Get_Country")]
+        public HttpResponseMessage Get_Country()
+        {
+            HttpResponseMessage hrm = new HttpResponseMessage();
+            ResponseObj ro = new ResponseObj();
+            try
+            {
+                SqlParameter[] prm = new SqlParameter[]
+                    {
+                        new SqlParameter("@TYPE","GET_COUNTRY")
+                    };
+                DataTable DT = new SQLHelper().ExecuteDataTable("SP_COUNTRY", prm, CommandType.StoredProcedure);
+                if (DT.Rows.Count > 0)
+                {
+                    ro.Status = 1;
+                    ro.Message = "Success";
+                    ro.dataTable = DT;
+                }
+                hrm = new GenLib().RecvAPIData(ro);
+                return hrm;
+            }
+            catch (Exception ex) {
+                hrm = new GenLib().WriteErrorLog(ex);
+                return hrm;
+            }
+        
+        }
+        [HttpPost]
+        [Route("api/Test_MVC_Operation_001/Get_State")]
+        public HttpResponseMessage Get_State(List<StateInformation> requestData)
+        {
+            HttpResponseMessage hrm = new HttpResponseMessage();
+            ResponseObj ro = new ResponseObj();
+            DataTable DT = new DataTable();
+            try
+            {
+                if (requestData.Count == 0)
+                {
+                    ro.Status = 0;
+                    ro.Message = "Pleate Provide Proper Data";
+                }
+                else
+                {
+                    SqlParameter[] prm = new SqlParameter[]
+                    {
+                        new SqlParameter("@TYPE","GET_STATE"),
+                        new SqlParameter("@CID",requestData[0].Cid)
+                    };
+                    DT = new SQLHelper().ExecuteDataTable("SP_STATE", prm, CommandType.StoredProcedure);
+                    if (DT.Rows.Count > 0)
+                    {
+                        ro.Status = 1;
+                        ro.Message = "SUCCESSFULLY";
+                        ro.dataTable = DT;
+                    }
+                }
+                hrm = new GenLib().RecvAPIData(ro);
+                return hrm;
+            }
+            catch (Exception EX)
+            {
+                hrm = new GenLib().WriteErrorLog(EX);
+                return hrm;
+            }
+        }
     }
 }

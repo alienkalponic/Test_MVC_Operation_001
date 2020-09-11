@@ -167,6 +167,7 @@
     <Compile Include="Helper\SQLHelper.cs" />
     <Compile Include="Helper\Utility.cs" />
     <Compile Include="Models\Information_Model.cs" />
+    <Compile Include="Models\StateInformation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
