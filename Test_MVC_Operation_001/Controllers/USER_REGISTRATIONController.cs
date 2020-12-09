@@ -125,6 +125,7 @@ namespace Test_MVC_Operation_001.Controllers
                 return hrm;
             }
         }
+        [Authorize]
         [HttpGet]
         [Route("api/Test_MVC_Operation_001/Get_Country")]
         public HttpResponseMessage Get_Country()
